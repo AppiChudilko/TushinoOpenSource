@@ -1,0 +1,192 @@
+//---------------------------------------------------------------------------
+
+#include <System.hpp>
+#pragma hdrstop
+
+#include "Main.h"
+#include "TRefMain.h"
+#pragma package(smart_init)
+//---------------------------------------------------------------------------
+
+//   Important: Methods and properties of objects in VCL can only be
+//   used in a method called using Synchronize, for example:
+//
+//      Synchronize(&UpdateCaption);
+//
+//   where UpdateCaption could look like:
+//
+void __fastcall TRefMain::UpdateCaption()
+{
+	ButtonRefresh->Visible=true;
+}
+//---------------------------------------------------------------------------
+
+__fastcall TRefMain::TRefMain(bool CreateSuspended)
+	: TThread(CreateSuspended)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TRefMain::Execute()
+{
+	FreeOnTerminate = true;
+
+	//ShowMessage("Done1");
+
+	Main->LabelNick->Text=L"Nick";
+	Main->LabelGroup->Text=L"Группа:";
+	Main->LabelName->Text=L"Имя:";
+	Main->LabelGUID->Text=L"";
+	Main->LabelID->Text=L"Arma2 ID:";
+	Main->LabelSGTime->Text=L"SG: ";
+	Main->LabelMaceTime->Text=L"mACE: ";
+	Main->LabelSide->Text=L"Сторона:";
+	Main->LabelFirst->Text=L"Боевое крещение:";
+	Main->LabelLast->Text=L"Крайний бой:";
+	Main->LabelReg->Text=L"Дата регистрации:";
+
+	std::auto_ptr<TStringStream> ss (new TStringStream("", TEncoding::GetEncoding(1251), true));
+	try
+	{
+		Main->IdHTTP1->Get("http://www.xn--c1adahg2atfb8hee9d.xn--p1ai/mobile_info.php?key=dsadas54sdgDF54cvdfghjsadf546&action=get_profile&mobile_id="+Main->MobileID, ss.get());
+	}
+	catch(...)
+	{
+	}
+
+	if (ss->DataString.Length() < 3) {
+		Main->LabelNick->Text=L"Уникальный индификатор не был указан в профиле на сайте";
+		Main->EditID->Text=Main->MobileID;
+	} else {
+
+		String One = ss->DataString;
+		String expr = "name =(.*?)&";
+		TRegExOptions reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelNick->Text=TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"user_group =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelGroup->Text=Main->LabelGroup->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"fullname =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelName->Text=Main->LabelName->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"arma_guid =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelGUID->Text=Main->LabelGUID->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"arma_id =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelID->Text=Main->LabelID->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"arma_sg_time =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelSGTime->Text=Main->LabelSGTime->Text+Main->UnixTimeToTime(StrToInt(TRegEx::Match(One, expr, reg_opt).Groups[1].Value));
+
+		expr = L"arma_sg_miss =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelSGTime->Text=Main->LabelSGTime->Text+"\\"+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"arma_sg_death =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelSGTime->Text=Main->LabelSGTime->Text+" \\"+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"arma_mace_time =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelMaceTime->Text=Main->LabelMaceTime->Text+Main->UnixTimeToTime(StrToInt(TRegEx::Match(One, expr, reg_opt).Groups[1].Value));
+
+		expr = L"arma_mace_miss =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelMaceTime->Text=Main->LabelMaceTime->Text+"\\"+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"arma_mace_death =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelMaceTime->Text=Main->LabelMaceTime->Text+" \\"+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"arma_side =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) //LabelGUID->Text=LabelGUID->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+		{
+			switch(StrToInt(TRegEx::Match(One, expr, reg_opt).Groups[1].Value)) {
+				case 0: Main->LabelSide->Text=Main->LabelSide->Text+L" Независимые"; break;
+				case 1: Main->LabelSide->Text=Main->LabelSide->Text+L" Красные"; break;
+				case 2: Main->LabelSide->Text=Main->LabelSide->Text+L" Синие"; break;
+			}
+		}
+
+
+		expr = L"firstmission =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelFirst->Text=Main->LabelFirst->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		expr = L"lastmission =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelLast->Text=Main->LabelLast->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+
+		expr = L"reg_date =(.*?)&";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		if (TRegEx::IsMatch(One, expr, reg_opt)) Main->LabelReg->Text=Main->LabelReg->Text+TRegEx::Match(One, expr, reg_opt).Groups[1].Value;
+
+		Main->EditID->Text=Main->MobileID;
+
+
+		try
+		{
+			Main->IdHTTP1->Get("http://www.xn--c1adahg2atfb8hee9d.xn--p1ai/mobile_info.php?key=dsadas54sdgDF54cvdfghjsadf546&action=get_history&mobile_id="+Main->MobileID, ss.get());
+		}
+		catch(...)
+		{
+		}
+		One = ss->DataString;
+		expr = L"<td style=\"text-align:center;\">(.*?)</td>";
+
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		TMatchCollection m;
+
+		short int X=0,Y=0;
+
+		if (TRegEx::IsMatch(One, expr, reg_opt))
+		{
+			m = TRegEx::Matches(One, expr, reg_opt);
+			for (int i=2; i<m.Count; i++)
+				for (int j=1; j<m.Item[i].Groups.Count; j++) {
+					if(i%2 == 0)
+						Main->StringGrid1->Cells[0][X++]=m.Item[i].Groups[j].Value;
+					else
+						Main->StringGrid1->Cells[1][Y++]=m.Item[i].Groups[j].Value;
+				}
+		}
+		One = ss->DataString;
+		expr = L"<td style=\"padding:5px; width: 500px; word-wrap:break-word;\">(.*?)</td>";
+		reg_opt = TRegExOptions() << roIgnoreCase << roMultiLine;
+		X=0;
+		if (TRegEx::IsMatch(One, expr, reg_opt))
+		{
+			m = TRegEx::Matches(One, expr, reg_opt);
+			for (int i=1; i<m.Count; i++)
+				for (int j=1; j<m.Item[i].Groups.Count; j++)
+					Main->StringGrid1->Cells[2][X++]=m.Item[i].Groups[j].Value;
+		}
+		TIniFile *CfgIni = new TIniFile(System::Ioutils::TPath::GetDocumentsPath() + PathDelim + "SettingCfg.ini");
+		CfgIni->WriteString("Prifile", "Nick", Main->LabelNick->Text);
+		CfgIni->WriteString("Prifile", "Group", Main->LabelGroup->Text);
+		CfgIni->WriteString("Prifile", "Name", Main->LabelName->Text);
+		CfgIni->WriteString("Prifile", "GUID", Main->LabelGUID->Text);
+		CfgIni->WriteString("Prifile", "ID", Main->LabelID->Text);
+		CfgIni->WriteString("Prifile", "SGTime", Main->LabelSGTime->Text);
+		CfgIni->WriteString("Prifile", "mACE", Main->LabelMaceTime->Text);
+		CfgIni->WriteString("Prifile", "Side", Main->LabelSide->Text);
+		CfgIni->WriteString("Prifile", "FirstMis", Main->LabelFirst->Text);
+		CfgIni->WriteString("Prifile", "LastMis", Main->LabelLast->Text);
+		CfgIni->WriteString("Prifile", "Reg", Main->LabelReg->Text);
+		delete CfgIni;
+	}
+	if (Main->LabelNick->Text == "Nick") {
+		Main->LabelNick->Text=L"Укажите свой уникальный индификатор в профиле на сайте";
+		Main->EditID->Text=Main->MobileID;
+	}
+
+	Synchronize(&UpdateCaption);
+}
+//---------------------------------------------------------------------------

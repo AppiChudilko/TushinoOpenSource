@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.219,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\TushinoMobile.cbproj=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Project1.cbproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.408,=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\TRefMain.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.197,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\TushinoMobilePCH1.h=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Project1PCH1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.927,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\TRefServer.cpp=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.029,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Project1PCH1.h=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.865,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Main.h=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Unit1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.865,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Main.fmx=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.962,=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.045,=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.927,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\TRefServer.h=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Unit1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.865,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Main.cpp=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.205,=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2015.10.14 14:09:30.235,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Tushino AppPCH1.h=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\TushinoMobilePCH1.h</Transaction>
+    <Transaction>2015.10.14 14:09:30.618,C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\Tushino App.cbproj=C:\Users\Appi\Documents\Embarcadero\Studio\Projects\Tushino Mobile\TushinoMobile.cbproj</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile Android="YT9110063J"/>
+	</ActiveMobileDevice>  <BT_BuildType>AppStore</BT_BuildType>
+</BorlandProject>

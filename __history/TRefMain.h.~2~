@@ -1,0 +1,18 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit1H
+#define Unit1H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+//---------------------------------------------------------------------------
+class TRefMain : public TThread
+{
+private:
+protected:
+	void __fastcall Execute();
+	void __fastcall UpdateCaption()
+public:
+	__fastcall TRefMain(bool CreateSuspended);
+};
+//---------------------------------------------------------------------------
+#endif
